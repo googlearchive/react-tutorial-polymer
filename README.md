@@ -21,7 +21,7 @@ Improvements in Polymer version
 Other differences
 
 * the react version includes node server code that doesn't work with latest express, so I just disabled it instead of debugging
-* I eliminated comment-list because simple repeats are primitives in Polymer, this was not stricly necesary
+* I eliminated comment-list because simple repeats are primitives in Polymer, this was not strictly necessary
 
 Irregularities
 
