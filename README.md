@@ -10,7 +10,7 @@ Similarities
 Differences of opinion in Polymer version
 
 * emphasis on HTML not JavaScript
-* no JavaScript entry point
+* no JavaScript entry point (<comment-box> in index.html is self-constructing)
 
 Improvements in Polymer version
 
