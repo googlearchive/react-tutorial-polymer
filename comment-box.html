@@ -1,0 +1,72 @@
+<link rel="import" href="components/polymer/polymer.html">
+<link rel="import" href="components/core-ajax/core-ajax.html">
+<link rel="import" href="components/marked-element/marked-element.html">
+
+<polymer-element name="x-comment" attributes="comment" noscript>
+<template>
+  <div class="comment">
+    <h2 class="commentAuthor">
+      {{comment.author}}
+    </h2>
+    <marked-element text="{{comment.text}}"></marked-element>
+  </div>
+</template>
+</polymer-element>
+
+<polymer-element name="comment-form">
+<template>
+  <form class="commentForm" on-submit="{{handleSubmit}}">
+    <input id="author" type="text" placeholder="Your name" value="{{author}}">
+    <input id="text" type="text" placeholder="Say something..." value="{{text}}">
+    <input type="submit" value="Post">
+  </form>
+</template>
+<script>
+  Polymer({
+    handleSubmit: function(e) {
+      e.preventDefault();
+      var author = this.author.trim();
+      var text = this.text.trim();
+      if (text && author) {
+        this.author = this.text = '';
+        this.fire('comment-submit', {author: author, text: text});
+      }
+    }
+  });
+</script>
+</polymer-element>
+
+<polymer-element name="comment-box" attributes="url pollInterval">
+<template>
+  <div class="commentBox">
+    <h1>Comments</h1>
+    <template repeat="{{comment in data}}">
+      <x-comment comment="{{comment}}"></x-comment>
+    </template>
+    <comment-form on-comment-submit="{{handleSubmit}}"></comment-form>
+  </div>
+  <core-ajax id="load" url="{{url}}" auto response="{{data}}"></core-ajax>
+  <core-ajax id="submit" url="{{url}}" method="POST" body="{{data}}"></core-ajax>
+</template>
+<script>
+  Polymer({
+    created: function() {
+      this.data = [];
+    },
+    ready: function() {
+      // no real server
+      //setInterval(this.loadCommentsFromServer.bind(this), this.pollInterval);
+    },
+    loadCommentsFromServer: function() {
+      this.$.load.go();
+    },
+    handleSubmit: function(e, comment) {
+      this.submit(comment);
+    },
+    submit: function(comment) {
+      this.data.push(comment);
+      // no real server
+      //this.$.submit.go();
+    }
+  });
+</script>
